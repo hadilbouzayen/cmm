@@ -1,0 +1,31 @@
+# Dependencies
+node_modules/
+**/node_modules/
+
+# Env / secrets
+.env
+**/.env
+git.md
+
+# Database & generated data
+backend/data/
+**/*.db
+**/*.db-wal
+**/*.db-shm
+
+# Uploads & backups
+uploads/
+backups/
+
+# Build output
+dist/
+**/dist/
+.vite/
+
+# Prisma generated client
+backend/node_modules/.prisma/
+
+# Misc
+*.log
+.DS_Store
+cmm-navigator-main.zip

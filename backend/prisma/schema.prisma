@@ -1,0 +1,164 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model AdminUser {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Category {
+  id          String   @id @default(cuid())
+  name        String
+  slug        String   @unique
+  description String?
+  status      String   @default("active")
+  courses     Course[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Course {
+  id               String         @id @default(cuid())
+  title            String
+  shortDescription String
+  description      String
+  objectives       String         @default("[]")
+  program          String         @default("[]")
+  categoryId       String
+  category         Category       @relation(fields: [categoryId], references: [id])
+  language         String?
+  coverImage       String?
+  level            String?
+  duration         String?
+  schedule         String?
+  price            String?
+  location         String?
+  instructor       String?
+  startDate        String?
+  endDate          String?
+  availablePlaces  Int            @default(12)
+  requirements     String         @default("[]")
+  includedItems    String         @default("[]")
+  status           String         @default("active")
+  featured         Boolean        @default(false)
+  images           CourseImage[]
+  registrations    Registration[]
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+}
+
+model CourseImage {
+  id        String @id @default(cuid())
+  courseId  String
+  course    Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  imageUrl  String
+  sortOrder Int    @default(0)
+}
+
+model Registration {
+  id           String   @id @default(cuid())
+  name         String
+  phone        String
+  email        String
+  courseId     String?
+  course       Course?  @relation(fields: [courseId], references: [id])
+  currentLevel String?
+  message      String?
+  consent      Boolean  @default(false)
+  status       String   @default("NEW")
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model ContactMessage {
+  id        String   @id @default(cuid())
+  name      String
+  phone     String
+  email     String
+  message   String
+  consent   Boolean  @default(false)
+  status    String   @default("NEW")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model GermanyOpportunity {
+  id              String   @id @default(cuid())
+  title           String
+  type            String
+  description     String
+  requirements    String   @default("[]")
+  germanLevel     String?
+  duration        String?
+  ageRequirement  String?
+  location        String?
+  sessions        String?
+  benefits        String   @default("[]")
+  applicationInfo String?
+  image           String?
+  status          String   @default("active")
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model Testimonial {
+  id          String   @id @default(cuid())
+  name        String
+  testimonial String
+  photo       String?
+  language    String?
+  published   Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model HomepageContent {
+  id              String   @id @default(cuid())
+  heroTitle       String
+  heroSubtitle    String
+  heroDescription String
+  germanyTitle    String
+  germanyText     String
+  ctaTitle        String
+  ctaText         String
+  updatedAt       DateTime @updatedAt
+}
+
+model WebsiteSettings {
+  id           String   @id @default(cuid())
+  centerName   String
+  logo         String?
+  phone        String
+  whatsapp     String?
+  email        String
+  address      String?
+  openingHours String?
+  facebookUrl  String?
+  instagramUrl String?
+  tiktokUrl    String?
+  footerText   String?
+  updatedAt    DateTime @updatedAt
+}
+
+model UploadedFile {
+  id           String   @id @default(cuid())
+  entityType   String
+  entityId     String?
+  folderPath   String
+  filename     String
+  path         String
+  originalName String
+  mimeType     String
+  size         Int
+  createdAt    DateTime @default(now())
+}
