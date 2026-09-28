@@ -22,6 +22,7 @@ export function ContactForm() {
         email,
         message: String(fd.get("message")),
         consent: fd.get("consent") === "on",
+        website: String(fd.get("website") || ""),
       });
       setSent(true);
       toast.success("Votre message a bien été envoyé.");
@@ -34,8 +35,8 @@ export function ContactForm() {
 
   if (sent) return (
     <div className="card p-8">
-      <h3>Merci pour votre message.</h3>
-      <p className="mt-2 text-muted-foreground">Notre équipe vous répondra prochainement.</p>
+      <h3>Merci.</h3>
+      <p className="mt-2 text-muted-foreground">Votre demande a bien été envoyée. Notre équipe vous contactera prochainement.</p>
     </div>
   );
 
@@ -47,9 +48,10 @@ export function ContactForm() {
         <label className="label">E-mail<input className="field" name="email" type="email" required maxLength={255} /></label>
       </div>
       <label className="label">Message<textarea className="field min-h-36" name="message" required maxLength={1000} /></label>
+      <input type="text" name="website" tabIndex={-1} autoComplete="off" className="hidden" aria-hidden="true" />
       <label className="flex items-start gap-3 text-sm text-muted-foreground">
         <input type="checkbox" name="consent" required className="mt-1" />
-        J'accepte que mes informations soient utilisées pour répondre à ma demande.
+        J'accepte que mes informations soient utilisées pour répondre à ma demande. Voir notre <a href="/privacy" className="underline">politique de confidentialité</a>.
       </label>
       <button disabled={loading} className="rounded-md bg-primary px-5 py-3 font-bold text-primary-foreground hover:bg-primary-strong disabled:opacity-60">
         {loading ? "Envoi…" : "Envoyer ma demande"}
@@ -80,6 +82,7 @@ export function RegistrationForm({ initialCourse = "" }: { initialCourse?: strin
         currentLevel: String(fd.get("level") || ""),
         message: String(fd.get("message") || ""),
         consent: fd.get("consent") === "on",
+        website: String(fd.get("website") || ""),
       });
       setSent(true);
       toast.success("Votre inscription a bien été envoyée.");
@@ -123,9 +126,10 @@ export function RegistrationForm({ initialCourse = "" }: { initialCourse?: strin
         </select>
       </label>
       <label className="label">Message<textarea className="field min-h-28" name="message" maxLength={1000} /></label>
+      <input type="text" name="website" tabIndex={-1} autoComplete="off" className="hidden" aria-hidden="true" />
       <label className="flex items-start gap-3 text-sm text-muted-foreground">
         <input type="checkbox" name="consent" required className="mt-1" />
-        J'accepte le traitement de mes informations pour cette demande.
+        J'accepte le traitement de mes informations pour cette demande. Voir notre <a href="/privacy" className="underline">politique de confidentialité</a>.
       </label>
       <button disabled={loading} className="rounded-md bg-primary px-5 py-3 font-bold text-primary-foreground hover:bg-primary-strong disabled:opacity-60">
         {loading ? "Envoi…" : "Envoyer mon inscription"}

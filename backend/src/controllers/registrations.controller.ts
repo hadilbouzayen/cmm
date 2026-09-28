@@ -1,10 +1,12 @@
 import { Request, Response } from "express";
 import prisma from "../lib/prisma";
 import { registrationSchema, registrationStatusSchema } from "../validators/registration.validator";
+import { notifyNewLead } from "../lib/notify";
 
 export async function submitRegistration(req: Request, res: Response) {
-  const data = registrationSchema.parse(req.body);
+  const { website, ...data } = registrationSchema.parse(req.body);
   const registration = await prisma.registration.create({ data });
+  await notifyNewLead("inscription", { ...data });
   res.status(201).json(registration);
 }
 

@@ -7,7 +7,8 @@ export const registrationSchema = z.object({
   courseId: z.string().optional(),
   currentLevel: z.string().optional(),
   message: z.string().optional(),
-  consent: z.boolean(),
+  consent: z.literal(true, { errorMap: () => ({ message: "Le consentement est requis." }) }),
+  website: z.string().optional(), // honeypot
 });
 
 export const registrationStatusSchema = z.object({

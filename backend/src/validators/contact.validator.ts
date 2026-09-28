@@ -5,7 +5,8 @@ export const contactSchema = z.object({
   phone: z.string().min(1),
   email: z.string().email(),
   message: z.string().min(1),
-  consent: z.boolean(),
+  consent: z.literal(true, { errorMap: () => ({ message: "Le consentement est requis." }) }),
+  website: z.string().optional(), // honeypot
 });
 
 export const contactStatusSchema = z.object({

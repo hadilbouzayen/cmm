@@ -6,6 +6,7 @@ import fs from "fs";
 import { requireAuth } from "../middleware/auth.middleware";
 import { uploadFile, listFiles, deleteFile } from "../controllers/uploads.controller";
 import { UPLOADS_ROOT } from "../lib/paths";
+import { asyncHandler } from "../utils/async-handler";
 
 const storage = multer.diskStorage({
   destination(req, file, cb) {
@@ -34,8 +35,8 @@ const upload = multer({
 
 const router = Router();
 
-router.post("/uploads", requireAuth, upload.single("file"), uploadFile);
-router.get("/uploads", requireAuth, listFiles);
-router.delete("/uploads/:id", requireAuth, deleteFile);
+router.post("/uploads", requireAuth, upload.single("file"), asyncHandler(uploadFile));
+router.get("/uploads", requireAuth, asyncHandler(listFiles));
+router.delete("/uploads/:id", requireAuth, asyncHandler(deleteFile));
 
 export default router;

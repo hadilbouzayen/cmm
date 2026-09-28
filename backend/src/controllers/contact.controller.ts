@@ -1,10 +1,12 @@
 import { Request, Response } from "express";
 import prisma from "../lib/prisma";
 import { contactSchema, contactStatusSchema } from "../validators/contact.validator";
+import { notifyNewLead } from "../lib/notify";
 
 export async function submitContact(req: Request, res: Response) {
-  const data = contactSchema.parse(req.body);
+  const { website, ...data } = contactSchema.parse(req.body);
   const message = await prisma.contactMessage.create({ data });
+  await notifyNewLead("contact", { ...data });
   res.status(201).json(message);
 }
 
